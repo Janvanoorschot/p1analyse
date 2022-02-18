@@ -19,11 +19,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     con = sqlite3.connect(args.dbase)
-    cur = con.cursor()
     query = ('SELECT * FROM records')
-    cur.execute(query)
-    record = cur.fetchone()
-    while record != None:
-        print(record)
-        record = cur.fetchone()
+    df = pd.read_sql_query(query, con)
     con.close()
