@@ -15,7 +15,7 @@ import argparse
 if __name__ == "__main__":
     # get commandline arguments
     parser = argparse.ArgumentParser(description='Dump the P1 serial database.')
-    parser.add_argument('--dbase', type=str, default="/var/lib/p1serial/p1serial.db", help='SQL Lite dbase file')
+    parser.add_argument('--dbase', type=str, default="/mnt/storage/sys/p1serial/p1serial.db", help='SQL Lite dbase file')
     args = parser.parse_args()
 
     con = sqlite3.connect(args.dbase)
