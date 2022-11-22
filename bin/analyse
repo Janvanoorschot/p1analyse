@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # %%
-# collect the data
+# collect the raw data (incremental usage in two delivery-tarifs
 import sqlite3
 import os
 
@@ -17,6 +17,10 @@ with sqlite3.connect(dbase, detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_C
     # query = 'SELECT timestamp ,delivtarief1,delivtarief2 FROM records ORDER BY timestamp ASC LIMIT 100'
     sql_query = pd.read_sql_query(query, con)
 df = pd.DataFrame(sql_query, columns=['t', 'delivtarief1', 'delivtarief2'])
+
+# %%
+for item in df:
+    print(".")
 
 # %%
 # do your first graph
