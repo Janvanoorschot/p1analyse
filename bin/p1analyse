@@ -5,7 +5,7 @@ import sqlite3
 import sys
 import os
 
-# import numpy as np
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -16,7 +16,7 @@ dbase = "/mnt/storage/sys/p1serial/p1serial.db"
 con = sqlite3.connect(dbase)
 query = 'SELECT * FROM records order by timestamp asc limit 100'
 sql_query = pd.read_sql_query(query, con)
-df = pd.DataFrame(sql_query, columns=['timestamp', 'delivtarief2'])
+df = pd.DataFrame(sql_query, columns=['timestamp', 'delivtarief1', 'delivtarief2'])
 con.close()
 
 #%%
