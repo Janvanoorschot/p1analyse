@@ -13,14 +13,16 @@ rootpath = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 dbase = "/mnt/storage/sys/p1serial/p1serial.db"
 with sqlite3.connect(dbase, detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES) as con:
     # query = 'SELECT locdate,delivtarief1,delivtarief2 FROM records ORDER BY locdate ASC LIMIT 100'
-    query = 'SELECT locdate as "t [timestamp]",delivtarief1,delivtarief2 FROM records ORDER BY locdate ASC LIMIT 10000'
+    # query = 'SELECT locdate as "t [timestamp]",delivtarief1,delivtarief2 FROM records ORDER BY locdate ASC LIMIT 10000'
+    query = 'SELECT locdate as "t [timestamp]",delivtarief1,delivtarief2 FROM records'
     # query = 'SELECT timestamp ,delivtarief1,delivtarief2 FROM records ORDER BY timestamp ASC LIMIT 100'
     sql_query = pd.read_sql_query(query, con)
 df = pd.DataFrame(sql_query, columns=['t', 'delivtarief1', 'delivtarief2'])
 
 # %%
-for item in df:
-    print(".")
+# df1 = df.copy()
+df1 = df.set_index("t")
+df2 = df1.resample("D").mean()
 
 # %%
 # do your first graph
