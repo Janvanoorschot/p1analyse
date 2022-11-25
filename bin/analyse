@@ -12,22 +12,30 @@ rootpath = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 
 dbase = "/mnt/storage/sys/p1serial/p1serial.db"
 with sqlite3.connect(dbase, detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES) as con:
-    # query = 'SELECT locdate,delivtarief1,delivtarief2 FROM records ORDER BY locdate ASC LIMIT 100'
-    # query = 'SELECT locdate as "t [timestamp]",delivtarief1,delivtarief2 FROM records ORDER BY locdate ASC LIMIT 10000'
+    # query = 'SELECT locdate as "t [timestamp]",delivtarief1,delivtarief2 FROM records ORDER BY locdate DESC LIMIT 100'
     query = 'SELECT locdate as "t [timestamp]",delivtarief1,delivtarief2 FROM records'
-    # query = 'SELECT timestamp ,delivtarief1,delivtarief2 FROM records ORDER BY timestamp ASC LIMIT 100'
     sql_query = pd.read_sql_query(query, con)
 df = pd.DataFrame(sql_query, columns=['t', 'delivtarief1', 'delivtarief2'])
 
 # %%
 # df1 = df.copy()
 df1 = df.set_index("t")
-df2 = df1.resample("D").mean()
+df2 = df1.resample("1H").mean()
+
+# %%
+# calculate the diff between hours
+df3 = df2.diff(1).iloc[::2].reset_index(drop=True)
+
+# %%
+# alternative diff
+df2['previous'] = df2['delivtarief1'].shift(1)
+df2['result'] = df2['delivtarief1'] - df2['previous']
+
 
 # %%
 # do your first graph
 
-plt.plot(df['t'], df['delivtarief2'])
+plt.plot(df2)
 plt.show()
 
 
